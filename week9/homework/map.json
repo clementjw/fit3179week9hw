@@ -2,16 +2,70 @@
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": 800,
     "height": 450,
-    "title": "Earthquakes of magnitude 4 or large between 4 Oct 2020 and 10 Oct 2020",
-    "projection": {"type": "equalEarth"},
-    "layer": [
-      {
-        "data": {
-          "url": "ne_110m.json",
-          "format": {"type": "topojson", "feature": "ne_110m"}
+    "title": { "text": "World map" },
+    "projection": {"type":"equalEarth"},
+    "layer":[
+        {"data": {
+    "graticule": {
+      "step": [30,30]
+    }
+  },
+  "mark": {
+    "type": "geoshape","stroke":"lightgray"
+  }},
+        {"data": {
+        
+        "url": "https://raw.githubusercontent.com/clementjw/fit3179week9hw/main/week9/homework/ne_110m.json",
+        "format":{"type": "topojson","feature": "ne_110m_admin_0_countries"}
+    
+    },
+    "mark": {"type": "geoshape", "fill": "lightgray", "stroke":"white"},
+    "encoding": {
+        "tooltip":[
+            {"field":"properties.NAME","type": "ordinal","title":"Country"},{"field":"Health and Survival Rank", "title":"Data Not Available"}
+            ]
+    }
+
+},
+        {"data": {
+        
+        "url": "https://raw.githubusercontent.com/clementjw/fit3179week9hw/main/week9/homework/ne_110m.json",
+        "format":{"type": "topojson","feature": "ne_110m_admin_0_countries"}
+    
+    },
+    "transform": [
+        {
+            "lookup": "properties.NAME",
+            "from":{
+                "data":{
+                    "url": "https://raw.githubusercontent.com/clementjw/fit3179week9hw/main/week9/homework/table-3b-detailed-rankings-2013-csv-2.csv"
+                },
+                "key": "Country",
+                "fields": ["Health and Survival Rank"]
+            }
+        }
+    ],
+    "mark": {"type": "geoshape"},
+    "encoding": {
+        
+        "color":{
+            "field":"Health and Survival Rank",
+            "type": "quantitative",
+            "scale":{
+                "type": "threshold",
+                "domain":[10,30,80,140],
+                "range":["#244700","#438500","#62C002","#B4FF6D","#CCFF9B"]
+                
+            }  
+
         },
-        "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"}
-      }
-      
-    ]
-  }
+        "tooltip":[
+            {"field":"properties.NAME","type": "nominal","title":"Country"},
+            {"field":"Health and Survival Rank","type": "quantitative"}
+        ]
+    }}
+    
+    
+
+    ]       
+}
