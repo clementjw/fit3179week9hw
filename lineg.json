@@ -1,0 +1,81 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "width":600,
+      "height":400,
+      "title":"Potential Deaths by Pakistan suicide attacks over the years",
+      "data":{
+          "url": "https://raw.githubusercontent.com/clementjw/fit3179week9hw/main/week9/homework/PakistanSuicideAttacks%20Ver%2011%20(30-November-2017).csv"
+      },
+      "params": [{
+          "name": "Beginning_Year",
+          "value": 1995,
+          "bind":{
+              "input":"range",
+              "min": 1995,
+              "max":2020,
+              "step": 1,
+              "name": "Beginning Year"
+          }
+      },
+      {
+          "name": "Ending_Year",
+          "value": 2020,
+          "bind":{
+              "input": "range",
+              "min": 1995,
+              "max":2020,
+              "step": 1,
+              "name": "Ending Year"
+          }
+      }],
+      "transform": [{"filter":"datum.Year >= Beginning_Year && datum.Year <= Ending_Year" }
+          ],
+      "encoding": {
+          "x":{
+              "field":"Year",
+              "type": "ordinal",
+              "title":"Year"
+  
+              },
+          "y":{
+              "field":"Killed Max",
+              "aggregate":"sum",
+              "type":"quantitative",
+              "title":"Maximum Number of Deaths"
+              },
+          "color":{"value":"red"}
+  
+          },
+          
+      "layer":[{
+          "mark":"line"
+          },
+             
+          {
+          "mark":{
+              "type": "text",
+              "align": "right",
+              "baseline": "middle",
+              "dx": 0,
+              "dy" : -15,
+              "fontSize": 11.5,
+              "fontStyle": "bold"
+  
+              },
+          "encoding": {
+              "text":{"field":"Killed Max", "type": "quantitative","aggregate":"sum"},
+              "opacity": {
+                  "condition":{
+                      "test":"datum['Year'] == 2010", "value":1
+                  }, 
+              "value":1
+              
+              },
+              "color":{"value":"black"},
+              "tooltip":[
+                  {"field":"Year", "type": "ordinal"}, 
+                  {"field":"Killed Max", "type": "quantitative", "aggregate":"sum"},
+                  {"field":"Year", "type": "quantitative","aggregate":"count", "title":"Count of Bombings"}]
+          }}
+      ]
+  }
